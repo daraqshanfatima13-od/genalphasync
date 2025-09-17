@@ -8,5 +8,15 @@ __pycache__/
 
 # Ignore logs
 *.log
+# Ignore virtual environment
+genenv/
 
-  
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore system files
+.DS_Store
