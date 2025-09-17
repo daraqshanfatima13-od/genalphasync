@@ -1,0 +1,12 @@
+# Ignore Python virtual environment
+genenv/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore logs
+*.log
+
+  
