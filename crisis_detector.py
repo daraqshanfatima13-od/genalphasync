@@ -19,12 +19,22 @@ import re
 import json
 from transformers import pipeline
 
-# ----- Load model once -----
-emotion_model = pipeline(
-    "text-classification",
-    model="bhadresh-savani/distilbert-base-uncased-emotion",
-    return_all_scores=False
-)
+import requests
+import os
+
+HF_API_KEY = os.environ.get("HF_API_KEY")
+API_URL = "https://api-inference.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base"
+headers = {"Authorization": f"Bearer {HF_API_KEY}"}
+
+def query_hf_model(text: str):
+    response = requests.post(API_URL, headers=headers, json={"inputs": text})
+    result = response.json()
+    if isinstance(result, list) and len(result) > 0:
+        label = result[0][0]["label"]
+        score = result[0][0]["score"]
+        return label, score
+    return None, None
+
 
 # ----- Crisis keywords (expand these) -----
 CRISIS_KEYWORDS = [
@@ -81,11 +91,10 @@ def model_check(text: str, threshold: float = 0.80) -> dict:
     Returns dict: {'label': label, 'score': score, 'is_risky': bool}
     We consider 'sadness' or 'fear' with score > threshold as risky.
     """
-    out = emotion_model(text)[0]  # e.g. {'label': 'sadness', 'score': 0.92}
-    label = out['label'].lower()
-    score = float(out['score'])
+    label, score = query_hf_model(text)
     is_risky = (label in ["sadness", "fear"]) and (score > threshold)
     return {"label": label, "score": score, "is_risky": is_risky}
+
 
 # ----- Full check -----
 def check_crisis(text: str, redact: bool = True) -> dict:
@@ -160,50 +169,109 @@ if __name__ == "__main__":
         escalate_alert(res)
 def check_crisis(text: str, redact: bool = True) -> dict:
     """
-    Simple and safe:
-      - If any crisis keyword found -> immediate crisis (override)
-      - Else use the model to decide (sadness/fear with high score)
-    Returns simple dict with fields you can use.
+    Returns a dict with:
+      original_text, redacted_text, emotion, score, top_scores,
+      keyword_flag, model_flag, crisis (final), reason
+    Keyword override: if any crisis keyword found => immediate crisis True
     """
     original = text
     if redact:
         text = redact_pii(text)
 
-    # 1) Keyword check (IMMEDIATE OVERRIDE)
+    # 1) Keyword check (immediate override)
     kw_flag = keyword_check(text)
     if kw_flag:
-        # If keyword found, return immediately with crisis True
         return {
             "original_text": original,
             "redacted_text": text,
             "emotion": None,
             "score": None,
+            "top_scores": None,
             "keyword_flag": True,
             "model_flag": False,
             "crisis": True,
-            "note": "keyword_override"
+            "reason": "keyword_override",
+            "note": ""
         }
 
     # 2) No keyword found -> use model
-    model_result = model_check(text)   # existing function that returns label and score
-    model_flag = model_result["is_risky"]
+    try:
+        # If you're using HF inference API, call query_hf_model(text)
+        # If you're using local pipeline, call model_check(text)
+        # For example, if you implemented query_hf_model:
+        emotion_label, emotion_score = query_hf_model(text)
+        if emotion_label is None:
+            # model couldn't produce result
+            model_flag = False
+            top_scores = None
+        else:
+            # simple rule: sadness/fear with threshold => risky
+            model_flag = (emotion_label.lower() in ["sadness", "fear"] and float(emotion_score) > 0.8)
+            top_scores = [(emotion_label, float(emotion_score))]
+    except Exception as e:
+        # model failed -> treat as non-crisis but record note
+        return {
+            "original_text": original,
+            "redacted_text": text,
+            "emotion": None,
+            "score": None,
+            "top_scores": None,
+            "keyword_flag": False,
+            "model_flag": False,
+            "crisis": False,
+            "reason": "model_error",
+            "note": str(e)
+        }
+
     return {
         "original_text": original,
         "redacted_text": text,
-        "emotion": model_result["label"],
-        "score": model_result["score"],
+        "emotion": emotion_label,
+        "score": float(emotion_score) if emotion_score is not None else None,
+        "top_scores": top_scores,
         "keyword_flag": False,
         "model_flag": model_flag,
         "crisis": model_flag,
+        "reason": "model" if model_flag else "none",
         "note": ""
     }
+
 import json
+def log_mismatch(result: dict, path="mismatches.log"):
+    """
+    Save disagreements where keyword_flag != model_flag,
+    but be robust to missing keys.
+    """
+    try:
+        keyword_flag = bool(result.get("keyword_flag", False))
+        model_flag = bool(result.get("model_flag", False))
+    except Exception:
+        # If result is malformed, write the raw JSON for manual inspection
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"raw_result": result}, ensure_ascii=False) + "\n")
+        return
+
+    # Only log when they disagree (useful for later inspection)
+    if keyword_flag != model_flag:
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
 def log_mismatch(result: dict, path="mismatches.log"):
     """
-    Save mismatches (keyword vs model) into a file.
+    Save disagreements where keyword_flag != model_flag,
+    but be robust to missing keys.
     """
-    if result["reason"] == "keyword" and result["emotion"] not in [None, "sadness", "fear"]:
+    try:
+        keyword_flag = bool(result.get("keyword_flag", False))
+        model_flag = bool(result.get("model_flag", False))
+    except Exception:
+        # If result is malformed, write the raw JSON for manual inspection
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"raw_result": result}, ensure_ascii=False) + "\n")
+        return
+
+    # Only log when they disagree (useful for later inspection)
+    if keyword_flag != model_flag:
         with open(path, "a", encoding="utf-8") as f:
             f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
@@ -224,10 +292,17 @@ if __name__ == "__main__":
 import json
 
 def log_mismatch(result: dict, path="mismatches.log"):
-    """
-    Save disagreements between keyword_flag and model_flag into a file.
-    Example: keyword found but model said 'joy'.
-    """
-    if result.get("keyword_flag") != result.get("model_flag"):
+    kw_flag = bool(result.get("keyword_flag", False))
+    model_flag = bool(result.get("model_flag", False))
+    reason = result.get("reason", "unknown")
+
+    if kw_flag != model_flag:
         with open(path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(result, ensure_ascii=False) + "\n")
+            f.write(json.dumps({
+                "text": result.get("original_text"),
+                "emotion": result.get("emotion"),
+                "keyword_flag": kw_flag,
+                "model_flag": model_flag,
+                "reason": reason
+            }, ensure_ascii=False) + "\n")
+

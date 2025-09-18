@@ -1,9 +1,17 @@
 {
-  "original_text": "Mujhe lagta hai apni zindagi khatam kar doon.",
-  "redacted_text": "Mujhe lagta hai apni zindagi khatam kar doon.",
-  "emotion": "joy",
-  "score": 0.6549256443977356,
-  "keyword_flag": true,
-  "model_flag": false,
-  "crisis": true
+  "original_text": "I feel so sad and alone.",
+  "redacted_text": "I feel so sad and alone.",
+  "emotion": "sadness",
+  "score": 0.9878161549568176,
+  "top_scores": [
+    [
+      "sadness",
+      0.9878161549568176
+    ]
+  ],
+  "keyword_flag": false,
+  "model_flag": true,
+  "crisis": true,
+  "reason": "model",
+  "note": ""
 }
