@@ -28,6 +28,9 @@ async def analyze(req: AnalyzeRequest, x_api_key: str | None = Header(None)):
 
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
+    print("DEBUG: received header =", x_api_key)
+    print("DEBUG: expected API_KEY =", API_KEY)
+
 
     text = req.text
     # 2) Run detection
