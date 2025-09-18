@@ -17,7 +17,6 @@ def load_keywords(path="keywords.txt"):
 KEYWORDS_LIST, KEYWORD_PATTERNS = load_keywords()
 import re
 import json
-from transformers import pipeline
 
 import requests
 import os
