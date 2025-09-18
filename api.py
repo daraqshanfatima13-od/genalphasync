@@ -24,6 +24,8 @@ def read_root():
 @app.post("/analyze")
 async def analyze(req: AnalyzeRequest, x_api_key: str | None = Header(None)):
     # 1) Check API key
+    print("DEBUG: received header =", x_api_key, "expected =", API_KEY)
+
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
