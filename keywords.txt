@@ -1,7 +1,167 @@
-marna hai
-zindagi khatam
-main marna chahta/chahti hoon
-i want to die
+# English crisis keywords
+suicide
+suicidal
 kill myself
 end my life
-depressed
+self harm
+cut myself
+hang myself
+die
+want to die
+end it all
+no reason to live
+can’t go on
+life is worthless
+end everything
+give up on life
+i want to hurt someone
+i want to go away
+i want to build grave
+i am in grave danger
+
+# Hindi crisis keywords
+marna hai
+marna chahta hoon
+marna chahti hoon
+zindagi khatam
+apni zindagi khatam
+meri zindagi bekar hai
+jeena nahi hai
+marne ka mann hai
+sab khatam karna hai
+zindagi bekar hai
+mar jaunga
+mar jaungi
+jeene ka koi matlab nahi
+apna life end karna hai
+main sabku marna chahti hoon
+main sabku marna chahta hoon
+main sabse dur jarahi hoon
+main sabse dur jaraha hoon
+
+# ================================
+# ENGLISH — Direct suicidal intent
+# ================================
+i want to kill myself
+want to kill myself
+i will kill myself
+i will kill myself tonight
+i want to end my life
+i will end my life
+i want to die
+i will die
+i'm going to kill myself
+i'm going to end my life
+i'm going to die
+i plan to kill myself
+planning to kill myself
+thoughts of suicide
+thinking about suicide
+i have suicidal thoughts
+i have thoughts of suicide
+i want to take my life
+i plan to take my life
+
+# ================================
+# ENGLISH — Methods / asking for ways
+# ================================
+how to kill myself
+how can i kill myself
+ways to kill myself
+how to end my life
+how to die
+best way to commit suicide
+how to commit suicide
+where to get pills to kill myself
+how to overdose
+how to hang myself
+how to slit my wrists
+how to jump off
+
+# ================================
+# ENGLISH — Imminent / time-bound
+# ================================
+tonight i will die
+today i will die
+right now i want to die
+i am going to do it now
+i will do it tonight
+i will do it now
+i might do it tonight
+i might do it now
+i am doing it now
+
+# ================================
+# ENGLISH — Self-harm acts / methods
+# ================================
+self harm
+hurt myself
+cut myself
+i cut myself
+i will cut myself
+i will hang myself
+hang myself
+poison myself
+take pills to die
+overdose to die
+slit my wrists
+slash my wrists
+jump off a building
+jump from bridge
+
+# ================================
+# ENGLISH — Hopelessness / intent-adjacent
+# ================================
+i can't go on
+i cant go on
+i can't keep living
+i cant keep living
+i can't live anymore
+i cant live anymore
+no reason to live
+give up on life
+end it all
+end everything
+finish it all
+i wish i were dead
+wish i were dead
+i don't care if i die
+i don't care anymore
+i'm done with life
+done with life
+i want out of here
+i want to disappear
+i wish i could disappear
+i want to disappear
+no way out
+i feel trapped and want to die
+i have no purpose
+i have no reason to live
+
+# ================================
+# ENGLISH — Distress / support-seeking
+# ================================
+i am so alone
+so alone
+i feel so alone
+no one cares
+nobody cares
+i have no friends
+i feel hopeless
+completely hopeless
+i am hopeless
+i feel worthless
+worthless
+i need help but don't know how
+i need someone to help me
+
+# ================================
+# HINGLISH / ROMANIZED HINDI
+# ================================
+main marna chahta hoon
+main marna chahti hoon
+main mar jaunga
+main mar jaungi
+meri zindagi khatam
+meri zindagi khatam karna hai
+apni zindagi khatam karna hai

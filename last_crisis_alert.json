@@ -1,17 +1,9 @@
 {
-  "original_text": "I feel so sad and alone.",
-  "redacted_text": "I feel so sad and alone.",
-  "emotion": "sadness",
-  "score": 0.9878161549568176,
-  "top_scores": [
-    [
-      "sadness",
-      0.9878161549568176
-    ]
-  ],
-  "keyword_flag": false,
-  "model_flag": true,
-  "crisis": true,
-  "reason": "model",
-  "note": ""
+  "original_text": "I want to kill myself.",
+  "redacted_text": "I want to kill myself.",
+  "emotion": "fear",
+  "score": 0.6232725381851196,
+  "keyword_flag": true,
+  "model_flag": false,
+  "crisis": true
 }
