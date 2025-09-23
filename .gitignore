@@ -1,22 +1,22 @@
 # Ignore Python virtual environment
 genenv/
+venv/
+.venv/
 
 # Ignore Python cache
 __pycache__/
 *.pyc
 *.pyo
-
-# Ignore logs
-*.log
-# Ignore virtual environment
-genenv/
-
-# Ignore Python cache files
-__pycache__/
-*.pyc
+*.pyd
 
 # Ignore VS Code settings
 .vscode/
 
+# Ignore logs and alerts
+requests.log
+last_crisis_alert.json
+mismatches.log
+
 # Ignore system files
 .DS_Store
+Thumbs.db

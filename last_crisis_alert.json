@@ -1,9 +1,12 @@
 {
-  "original_text": "I want to kill myself.",
-  "redacted_text": "I want to kill myself.",
-  "emotion": "fear",
-  "score": 0.6232725381851196,
+  "original_text": "Mujhe lagta hai apni zindagi khatam kar doon.",
+  "redacted_text": "Mujhe lagta hai apni zindagi khatam kar doon.",
+  "emotion": null,
+  "score": null,
+  "top_scores": null,
   "keyword_flag": true,
   "model_flag": false,
-  "crisis": true
+  "crisis": true,
+  "reason": "keyword_override",
+  "note": ""
 }

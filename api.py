@@ -1,15 +1,16 @@
 # api.py
 import os
 import json
-from fastapi import FastAPI, HTTPException, Header, Request
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 from datetime import datetime
-from crisis_detector import check_crisis, log_mismatch, redact_pii  # uses your working file
+from crisis_detector import check_crisis, log_mismatch
 
 app = FastAPI(title="Gen-α-Sync Analyzer")
 
-# Simple API key auth (set this as env var before running / deploy)
-API_KEY = os.environ.get("API_KEY", "dev-secret")  # override in production/render
+# 🔑 Hard-coded key for local testing
+API_KEY = "my-team-secret123"
+print("DEBUG: API_KEY set to", API_KEY)
 
 # Request model
 class AnalyzeRequest(BaseModel):
